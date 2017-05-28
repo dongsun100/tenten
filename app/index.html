@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>10 x 10</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+		<link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/all.css">
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    
+  </head>
+  <body>
+    <div class="header">
+      <h1 class="title">10 x 10</h1>
+      <div class="score">점수 <span>0</span></div>
+    </div>
+    <div class="playground">
+      <div class="bg"></div>
+      <div class="game-over">
+        <div class="game-over-popup">
+          <h1 class="title">Game Over</h1>
+          <button>OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer"></div>
+    
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="/bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+    <script src="/bower_components/bowser/src/bowser.js"></script>
+		<!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
