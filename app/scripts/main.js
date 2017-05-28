@@ -339,3 +339,8 @@ $(function() {
     $('.game-over').removeClass('game-over-on');
   });
 });
+
+
+$(document).on('touchmove', function(e) {
+  e.preventDefault();
+});
