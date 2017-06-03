@@ -173,8 +173,12 @@ function makeRemainBlock() {
     drag: function() {
       var bgPosition = $('.bg').offset();
       var bgWidth = $('.bg').width();
-      var myPosition = $(this).offset();
+      var myPosition = $(this).find('.horz:eq(0)').offset();
       var block = $(this).data('block');
+      block.valid = undefined;
+      
+      //console.log('bgPosition (' + bgPosition.left + ', ' + bgPosition.top + ')');
+      //console.log('myPosition (' + myPosition.left + ', ' + myPosition.top + ')');
 
       var blockLayout = block.layout;
       var blockColor = block.color;
@@ -196,15 +200,14 @@ function makeRemainBlock() {
         return;
       }
 
+      console.log('block (' + blockX + ', ' + blockY + ')');
+
       // 자리에 놓을 수 있는 지 체크
       if(isValid(blockX, blockY, block)) {
         block.x = blockX;
         block.y = blockY;
         block.valid = true;
         return true;
-      }
-      else {
-        block.valid = undefined;
       }
     },
     revert: true
@@ -292,6 +295,7 @@ $(function() {
   drawBackground();
 
   $('.bg').droppable({
+    tolerance: 'pointer',
     accept: '.remain-block',
     classes: {
       'ui-droppable-active':'ui-stat-active',
