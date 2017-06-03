@@ -161,10 +161,10 @@ function makeRemainBlock() {
   }
 
   var cursorAt;
-  if(bowser.mobile) {
+  if(isMobile()) {
     cursorAt = {
-      top: 150,
-      left: 0
+      top: 130,
+      left: 50
     };
   }
   $('.remain-block').draggable({
@@ -210,7 +210,13 @@ function makeRemainBlock() {
         return true;
       }
     },
-    revert: true
+    revert: function(droppable) {
+      if(!droppable) return true;
+      
+      var dropped = droppable.data('dropped');
+      droppable.removeData('dropped')
+      return !dropped;
+    }
   });
 }
 
@@ -295,7 +301,7 @@ $(function() {
   drawBackground();
 
   $('.bg').droppable({
-    tolerance: 'pointer',
+    tolerance: isMobile() ? 'touch' : 'pointer',
     accept: '.remain-block',
     classes: {
       'ui-droppable-active':'ui-stat-active',
@@ -328,10 +334,15 @@ $(function() {
         }
         block.valid = undefined;
 
+        ui.draggable.addClass('dropped');
+        $(this).data('dropped', true);
+
         $('.score span').text(score);
 
         checkGameover();
       }
+
+      return true;
     }
   });
   
@@ -348,3 +359,7 @@ $(function() {
 $(document).on('touchmove', function(e) {
   e.preventDefault();
 });
+
+function isMobile() {
+  return 'ontouchstart' in document;
+}

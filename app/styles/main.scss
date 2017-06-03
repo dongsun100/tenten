@@ -22,8 +22,11 @@ html, body {
 	border-radius: 5px;
 	height: 30px;
 	width: 30px;
-	transition: background-color 0.5s ease-out;
+	transition: background-color,width,height 0.5s,0.2s,0.2s ease-out;
 	border: 1px solid #444;
+}
+.dropped .block {
+	transition: background-color 0.5s ease-out;
 }
 .color-0 {
 	background-color: #ff3333;
@@ -65,25 +68,21 @@ html, body {
 	margin-top: 25px;
 	height: 130px;
 
-	.remain-block {
-		transform: scale(0.7);
+	.remain-block .block {
+		width: 20px;
+		height: 20px;
 	}
-	.ui-draggable-dragging {
-		transform: scale(1);
-
-		.block {
-			margin-bottom: 4px;
-			margin-right: 4px;
-			width: 27px;
-			height: 27px;
-		}
+	.ui-draggable-dragging .block {
+		margin-bottom: 4px;
+		margin-right: 4px;
+		width: 27px;
+		height: 27px;
 	}
 }
 .remain-block {
 	display: flex;
 	flex-direction: column;
-	transition: transform 0.2s ease-out;
-	flex: 1;
+	width: 33%;
 	align-items: center;
 	justify-content: center;
 	height: 100%;
@@ -98,6 +97,9 @@ html, body {
 	font-size: 20px;
 	text-align: center;
 	margin: 10px;
+	position: absolute;
+	top: 5px;
+	right: 10px
 }
 .game-over {
 	display: none;
@@ -124,4 +126,8 @@ html, body {
 	background-color: rgba(200,200,200,0.7);
 	overflow: hidden;
 	padding: 30px;
+
+	button {
+		background-color: orange;
+	}
 }
