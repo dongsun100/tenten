@@ -210,9 +210,10 @@ function makeRemainBlock() {
         return true;
       }
     },
+    revertDuration: 200,
     revert: function(droppable) {
       if(!droppable) return true;
-      
+
       var dropped = droppable.data('dropped');
       droppable.removeData('dropped')
       return !dropped;
