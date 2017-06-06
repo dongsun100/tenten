@@ -151,7 +151,9 @@ function isValid(blockX, blockY, block) {
 }
 
 function makeRemainBlock() {
-  $('.footer').html('<div class="remain-block remain-block0"></div><div class="remain-block remain-block1"></div><div class="remain-block remain-block2"></div>')
+  $('.footer')
+    .css('pointer-events', '')
+    .html('<div class="remain-block remain-block0"></div><div class="remain-block remain-block1"></div><div class="remain-block remain-block2"></div>')
   
   for(var i=0;i<3;i++) {
     var remainBlock = new Block(parseInt(Math.random() * PLAYGROUND_COLOR_INDEX, 10), parseInt(Math.random() * PLAYGROUND_TYPE_INDEX, 10));
@@ -200,7 +202,7 @@ function makeRemainBlock() {
         return;
       }
 
-      console.log('block (' + blockX + ', ' + blockY + ')');
+      //console.log('block (' + blockX + ', ' + blockY + ')');
 
       // 자리에 놓을 수 있는 지 체크
       if(isValid(blockX, blockY, block)) {
@@ -221,7 +223,8 @@ function makeRemainBlock() {
   });
 }
 
-function resetDivColor(x, y, color, delay) {
+function removeBox(x, y, color, delay) {
+  playground[y][x] = color;
   delay = (delay !== undefined) ? delay : 300;
   setTimeout(function() {
     var $block = $('.bg .horz').eq(y).children('.block').eq(x);
@@ -232,6 +235,7 @@ function resetDivColor(x, y, color, delay) {
 function removeLines() {
   var x,y,i,j,yCheck,xCheck;
   var removedLineCount = 0;
+  var boxToRemove = [];
   for(i=0;i<TEN;i++) {
     xCheck = yCheck = true;
     for(j=0;j<TEN;j++) {
@@ -244,18 +248,28 @@ function removeLines() {
     }
     if(xCheck) {
       for(x=0;x<TEN;x++) {
-        playground[i][x] = PLAYGROUND_COLOR_INDEX;
-        resetDivColor(x, i, PLAYGROUND_COLOR_INDEX);
+        boxToRemove.push({
+          x: x,
+          y: i
+        });
       }
       removedLineCount++;
     }
     if(yCheck) {
       for(y=0;y<TEN;y++) {
-        playground[y][i] = PLAYGROUND_COLOR_INDEX;
-        resetDivColor(i, y, PLAYGROUND_COLOR_INDEX);
+        boxToRemove.push({
+          x: i,
+          y: y
+        });
       }
       removedLineCount++;
     }
+  }
+
+  for(i=0;i<boxToRemove.length;i++) {
+    x = boxToRemove[i].x;
+    y = boxToRemove[i].y;
+    removeBox(x, y, PLAYGROUND_COLOR_INDEX);
   }
 
   if(removedLineCount > 0) {
@@ -267,11 +281,13 @@ function checkGameover() {
   var $remainBlock = getHiddenRemainBlock();
   var invalidCount = 0;
 
+  print1010();
+
   $remainBlock.each(function() {
     var x,y;
     var block = $(this).data('block');
-    for(x=0;x<TEN-block.width;x++) {
-      for(y=0;y<TEN-block.height;y++) {
+    for(x=0;x<TEN-(block.width-1);x++) {
+      for(y=0;y<TEN-(block.height-1);y++) {
         if(isValid(x, y, block)) {
           return;
         }
@@ -283,7 +299,8 @@ function checkGameover() {
   if($remainBlock.length == invalidCount) {
     setTimeout(function() {
       $('.game-over').addClass('game-over-on');
-      $('.footer').empty();
+      // drag가 안되게 한다.
+      $('.footer').css('pointer-events', 'none');
     }, 500);
   }
 }
@@ -294,8 +311,21 @@ function getHiddenRemainBlock() {
   });
 }
 
-function print() {
-  console.table(playground);
+function print1010() {
+  var x,y,out;
+  for(y=0;y<TEN;y++) {
+    out = '';
+    for(x=0;x<TEN;x++) {
+      if(playground[y][x] == PLAYGROUND_COLOR_INDEX) {
+        out += 'X ';
+      }
+      else {
+        out += 'O ';
+      }
+    }
+    console.log(out);
+  }
+  console.log('\n\n');
 }
 
 $(function() {
@@ -320,8 +350,7 @@ $(function() {
         for(i=0;i<block.width;i++) {
           for(j=0;j<block.height;j++) {
             if(block.layout[j][i] == 1) {
-              playground[block.y + j][block.x + i] = block.color;
-              resetDivColor(block.x + i, block.y + j, block.color, 0);
+              removeBox(block.x + i, block.y + j, block.color, 0);
               score++;
             }
           }
